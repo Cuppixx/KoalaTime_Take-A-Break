@@ -1,0 +1,178 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7bhfpfiurkcb"]
+
+[ext_resource type="Script" path="res://addons/koala_time/resources/window.gd" id="1_oqhrf"]
+[ext_resource type="Texture2D" uid="uid://bp10sj451ev5p" path="res://addons/koala_time/images/AI_animals/koala01.png" id="2_2vj6k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eyc1i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6n2rq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bqgct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aejk7"]
+
+[node name="Window" type="Window"]
+title = "Take A Break"
+size = Vector2i(500, 500)
+transient = true
+exclusive = true
+unresizable = true
+borderless = true
+script = ExtResource("1_oqhrf")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.403922, 0.388235, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+self_modulate = Color(1, 1, 1, 0.882353)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_2vj6k")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MessageMarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -222.5
+offset_right = 222.5
+offset_bottom = 76.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="ColorRect" type="ColorRect" parent="Control/MessageMarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0.254902, 0.313726)
+
+[node name="MessageLabel" type="Label" parent="Control/MessageMarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 0.823529)
+theme_override_colors/font_shadow_color = Color(0, 0.12549, 0.396078, 0.878431)
+theme_override_colors/font_outline_color = Color(0, 0.0666667, 0.25098, 0.686275)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerMarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -38.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TimerLabel" type="Label" parent="Control/TimerMarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 0.933333)
+theme_override_colors/font_shadow_color = Color(0.141176, 0.141176, 0.141176, 0.909804)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 58
+text = "00 : 00 : 01"
+
+[node name="SettingsMarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -88.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="ColorRect" type="ColorRect" parent="Control/SettingsMarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0.254902, 0.313726)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/SettingsMarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/SettingsMarginContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -15
+
+[node name="Button" type="Button" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.0745098, 0.0745098, 0.0745098, 0.909804)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_4f0h7")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_eyc1i")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6n2rq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bqgct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aejk7")
+text = "<<<  Next Session  >>>"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSlider" type="HSlider" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(1, 1, 0.878431, 1)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 5.0
+max_value = 300.0
+step = 5.0
+value = 5.0
+
+[node name="Label" type="Label" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0 min"
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

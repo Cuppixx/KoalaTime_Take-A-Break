@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2xno6jyg2rpn"]
+
+[ext_resource type="Script" path="res://addons/koala_time/resources/dock.gd" id="1_t0hba"]
+
+[node name="KoalaTimeDock" type="Control"]
+custom_minimum_size = Vector2(188, 70)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t0hba")
+
+[node name="BreakTimer" type="Timer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimerLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="SkipButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Skip Session"
+
+[node name="StopButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Un/Pause"
+
+[connection signal="timeout" from="BreakTimer" to="." method="_on_break_timer_timeout"]
