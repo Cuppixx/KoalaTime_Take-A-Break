@@ -11,8 +11,7 @@ Want to [display your own png files](#display-your-own-png-files)!?
 ![KoalaTime](readme-example.png)
 
 ## TODO / What I want to do
-- Sound Design for the Popup Window
-- Make the Popup less sudden
+- _No pending tasks_
 
 ## Installation
 
@@ -50,8 +49,8 @@ Under the images folder ...
 res://
 	addons
 		koala_time
-						...other files and folders...
-						images
+			...other files and folders...
+			images
 ```
 
 ... copy and paste you own **png** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
