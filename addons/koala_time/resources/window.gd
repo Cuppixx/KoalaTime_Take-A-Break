@@ -6,8 +6,8 @@ const BREAK_TEXT:String = "%d min"
 const IMAGE_ROOT_PATH:String = "res://addons/koala_time/images/"
 const IMAGE_EXTENSION:String = "png"
 const ERR:String = "--> KT: An error occurred when trying to access the path!"
-var new_break_time:int
 var file_array = []
+var new_break_time:int
 
 var message := {
 	1:   "Stretch those legs!",
@@ -110,37 +110,118 @@ var message := {
 	98:  "Pause for positivity.",
 	99:  "Refresh, then rock it!",
 	100: "A break, a better you.",
-}
 
+	101: "Take a code break.",
+	102: "Debug later, relax now.",
+	103: "Chill, no syntax stress.",
+	104: "Time for coding siesta.",
+	105: "Decompress your code.",
+	106: "Ctrl+Alt+Chill mode.",
+	107: "Pause for byte-size fun.",
+	108: "Relax, code will wait.",
+	109: "Chillax and debug.",
+	110: "Debug tomorrow, Chill now.",
+	111: "Relax, no semicolon panic.",
+	112: "Coffee break, code waits.",
+	113: "Chill vibes, no bugs.",
+	114: "Relax, no stack overflow.",
+	115: "Unwind, refactor later.",
+	116: "Take a chill pill.",
+	117: "Code off, chill on.",
+	118: "A delightful timeout.",
+	119: "Error-free zone, relax.",
+	120: "Chill like a compiler.",
+	121: "Timeout for code cooldown.",
+	122: "Debug delay, chill play.",
+	123: "Chillwave coding playlist.",
+	124: "Breakpoint for relaxation.",
+	125: "Pause for coding laughter.",
+	126: "Chill code, hot cocoa.",
+	127: "No stress, just JSON.",
+	128: "Relax, no merge conflicts.",
+	129: "Code freeze, chill breeze.",
+	130: "Escape the curly braces.",
+	131: "Chill, no race conditions.",
+	132: "Breathe, code gently.",
+	133: "No more compiler tantrums.",
+	134: "Take a code nap.",
+	135: "Ctrl+Zzz relaxation.",
+	136: "Chillax, no runtime errors.",
+	137: "Relax, no memory leaks.",
+	138: "Syntax serenity now.",
+	139: "Decompress with code memes.",
+	140: "Chill like a coding ninja.",
+	141: "Code unwind session.",
+	142: "Debug postponed!",
+	143: "Code later, laugh now.",
+	144: "Chill, no infinite loops.",
+	145: "Time to code your dreams.",
+	146: "Freetime, no bugs invited!",
+	147: "Code zen zone activated.",
+	148: "Take a chill byte.",
+	149: "Relax, happiness loading.",
+
+	150: "Time to RTFMM.",
+}
 
 @onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/Button
 @onready var break_time_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Label
 @onready var break_time_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider
 @onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
+@onready var anim_player:AnimationPlayer = $AnimationPlayer
+@onready var page_flip_audio:AudioStreamPlayer = $AudioStreamPlayer1
+@onready var scribble_audio:AudioStreamPlayer = $AudioStreamPlayer2
+@onready var pencil_tick_audio:AudioStreamPlayer = $AudioStreamPlayer3
 
 func _notification(what:int) -> void:
 	match what:
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			queue_free()
+		_: pass
 
 func _ready() -> void:
-	# Set random Background
+	# Startup
+	page_flip_audio.play()
+	anim_player.speed_scale = 3
+	anim_player.play("fade_in")
+
+	# Set random Background and Text
 	_get_dir_contents(IMAGE_ROOT_PATH)
 	if file_array.size() > 0:
 		$Control/TextureRect.texture = load(file_array[randi_range(0,file_array.size()-1)])
-
-	# Set random Text
-	$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,100)]
+	$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,message.size())]
 
 	# Set Settings and Data
-	_on_timer_timeout()
-	break_time_label.text = BREAK_TEXT % [new_break_time / 60]
+	timer_label.text = TIMER_TEXT % ["00","00","00"]
+	_set_break_time_label()
 	break_time_slider.value = new_break_time / 60
-	next_button.pressed.connect(func() -> void: queue_free())
-	break_time_slider.drag_ended.connect(func(_bool:bool) -> void:
-		new_break_time = break_time_slider.value * 60
-		break_time_label.text = BREAK_TEXT % [new_break_time / 60]
+
+	# Connect Signals
+	next_button.pressed.connect(func() -> void:
+		page_flip_audio.play()
+		anim_player.speed_scale = 11
+		anim_player.play("fade_out")
+		await page_flip_audio.finished
+		queue_free()
 	)
+	break_time_slider.drag_started.connect(func() -> void: scribble_audio.play())
+	break_time_slider.drag_ended.connect(func(_bool:bool) -> void:
+		scribble_audio.stop(); pencil_tick_audio.play()
+	)
+	break_time_slider.value_changed.connect(func(value:float) -> void:
+		new_break_time = value * 60
+		_set_break_time_label()
+	)
+
+	# Start the break time
+	$Timer.start(1)
+
+func _set_break_time_label() -> void:
+	break_time_label.text = BREAK_TEXT % [new_break_time / 60]
+	if (new_break_time / 60) >= 10 and (new_break_time / 60) < 100:
+		break_time_label.text = str(0)+break_time_label.text
+	if (new_break_time / 60) < 10:
+		break_time_label.text = str(0)+str(0)+break_time_label.text
 
 func _get_dir_contents(path):
 	var dir = DirAccess.open(path)

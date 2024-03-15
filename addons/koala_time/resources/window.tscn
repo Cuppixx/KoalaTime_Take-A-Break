@@ -1,7 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7bhfpfiurkcb"]
+[gd_scene load_steps=14 format=3 uid="uid://b7bhfpfiurkcb"]
 
 [ext_resource type="Script" path="res://addons/koala_time/resources/window.gd" id="1_oqhrf"]
-[ext_resource type="Texture2D" uid="uid://bnigk3om00k80" path="res://addons/koala_time/images/AI_animals/rabbit01.png" id="2_00msr"]
+[ext_resource type="Texture2D" uid="uid://bp10sj451ev5p" path="res://addons/koala_time/images/AI_animals/koala01.png" id="2_bbn31"]
+[ext_resource type="AudioStream" uid="uid://b1iivgtmgqk4l" path="res://addons/koala_time/sounds/pencil_check_mark.mp3" id="3_i7opn"]
+[ext_resource type="AudioStream" uid="uid://gymxg0u7pfwr" path="res://addons/koala_time/sounds/scribble_long_strokes.mp3" id="4_43whf"]
+[ext_resource type="AudioStream" uid="uid://dgwgj5ew4swue" path="res://addons/koala_time/sounds/pageflip.mp3" id="5_0eepl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
 
@@ -13,16 +16,81 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aejk7"]
 
+[sub_resource type="Animation" id="Animation_2dm14"]
+resource_name = "fade_in"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 2,
+"values": [Color(0.137255, 0.137255, 0.137255, 0.552941), Color(0.552941, 0.552941, 0.552941, 0.803922), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uto0w"]
+resource_name = "fade_out"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [Color(1, 1, 1, 0.901961), Color(0, 0, 0, 0.721569)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_735bd"]
+_data = {
+"fade_in": SubResource("Animation_2dm14"),
+"fade_out": SubResource("Animation_uto0w")
+}
+
 [node name="Window" type="Window"]
 title = "Take A Break"
-size = Vector2i(500, 500)
+position = Vector2i(1055, 495)
+size = Vector2i(450, 450)
 transient = true
 exclusive = true
 unresizable = true
 borderless = true
+transparent = true
 script = ExtResource("1_oqhrf")
 
 [node name="Control" type="Control" parent="."]
+modulate = Color(0.137255, 0.137255, 0.137255, 0.552941)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +115,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_00msr")
+texture = ExtResource("2_bbn31")
 expand_mode = 1
 stretch_mode = 6
 
@@ -76,6 +144,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 28
+text = "Revitalize your spirit."
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -102,7 +171,7 @@ theme_override_colors/font_shadow_color = Color(0.141176, 0.141176, 0.141176, 0.
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 4
 theme_override_font_sizes/font_size = 58
-text = "00 : 00 : 01"
+text = "01 : 35 : 11"
 
 [node name="SettingsMarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
@@ -172,6 +241,25 @@ layout_mode = 2
 text = "0 min"
 
 [node name="Timer" type="Timer" parent="."]
-autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_735bd")
+}
+speed_scale = 3.0
+
+[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_0eepl")
+volume_db = 3.0
+pitch_scale = 1.15
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_43whf")
+volume_db = -10.0
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_i7opn")
+volume_db = -18.0
+pitch_scale = 0.88
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -57,6 +57,7 @@ func _open_new_session_window() -> void:
 	window.position = DisplayServer.screen_get_size() / 2 - window.size / 2
 	window.new_break_time = break_time
 	add_child(window,false,Node.INTERNAL_MODE_FRONT)
+	window.set_current_screen(DisplayServer.window_get_current_screen())
 
 	window.tree_exiting.connect(func() -> void:
 		break_time_counter = window.new_break_time

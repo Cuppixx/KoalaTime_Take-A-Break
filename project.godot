@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Koala Time Addon"
-config/version="1.0.0"
+config/version="1.0.1"
 config/tags=PackedStringArray("addon")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.png"
