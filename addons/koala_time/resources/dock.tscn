@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/koala_time/resources/dock.gd" id="1_t0hba"]
 
 [node name="KoalaTimeDock" type="Control"]
-custom_minimum_size = Vector2(188, 70)
+custom_minimum_size = Vector2(175, 70)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

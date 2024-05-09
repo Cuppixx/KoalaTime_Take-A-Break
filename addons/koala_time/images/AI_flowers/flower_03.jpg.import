@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnigk3om00k80"
-path="res://.godot/imported/rabbit01.png-2439f8e3ee57415e26017f5eb5b2542d.ctex"
+uid="uid://d0stm80421ply"
+path="res://.godot/imported/flower_03.jpg-8ab809ad7437c0fad0c8bc9f8e04b7b9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/koala_time/images/AI_animals/rabbit01.png"
-dest_files=["res://.godot/imported/rabbit01.png-2439f8e3ee57415e26017f5eb5b2542d.ctex"]
+source_file="res://addons/koala_time/images/AI_flowers/flower_03.jpg"
+dest_files=["res://.godot/imported/flower_03.jpg-8ab809ad7437c0fad0c8bc9f8e04b7b9.ctex"]
 
 [params]
 

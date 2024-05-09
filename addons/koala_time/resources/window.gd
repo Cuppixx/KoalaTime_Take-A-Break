@@ -1,14 +1,22 @@
 @tool
 class_name KTwindow extends Window
 
+# Texts
 const TIMER_TEXT:String = "%s : %s : %s"
-const BREAK_TEXT:String = "%d min"
-const IMAGE_ROOT_PATH:String = "res://addons/koala_time/images/"
-const IMAGE_EXTENSION:String = "png"
-const ERR:String = "--> KT: An error occurred when trying to access the path!"
-var file_array = []
-var new_break_time:int
+const BREAK_TEXT:String = "%s min"
 
+# Path and Image stuff
+const IMAGE_ROOT_PATH:String = "res://addons/koala_time/images/"
+const IMAGE_EXTENSIONS:Array[String] = ["png","jpg","jpeg","svg"]
+const SEPARATOR:String = "/"
+
+# Error Handling
+const ERR:String = "--> KT: An error occurred when trying to access the path!"
+
+# Vars
+var is_editor_hint_custom:bool = true
+var new_break_time:int
+var image_file_array = []
 var message := {
 	1:   "Stretch those legs!",
 	2:   "Eyes need rest too.",
@@ -164,18 +172,30 @@ var message := {
 	150: "Time to RTFMM.",
 }
 
-@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/Button
-@onready var break_time_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Label
-@onready var break_time_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider
+var hours  :String = str(0)
+var minutes:String = str(0)
+var seconds:String = str(0)
+
+var parent:KoalaTimeDock
+
+#region @onready vars
+@onready var bg_texture_rect:TextureRect = $Control/TextureRect
+@onready var message_label:Label = $Control/MessageMarginContainer/MessageLabel
 @onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
+@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/Button
+@onready var break_time_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider
+@onready var break_time_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Label
+@onready var timer:Timer = $Timer
 @onready var anim_player:AnimationPlayer = $AnimationPlayer
-@onready var page_flip_audio:AudioStreamPlayer = $AudioStreamPlayer1
-@onready var scribble_audio:AudioStreamPlayer = $AudioStreamPlayer2
-@onready var pencil_tick_audio:AudioStreamPlayer = $AudioStreamPlayer3
+@onready var page_flip_audio:AudioStreamPlayer = $Audio/AudioStreamPlayer1
+@onready var scribble_audio:AudioStreamPlayer = $Audio/AudioStreamPlayer2
+@onready var pencil_tick_audio:AudioStreamPlayer = $Audio/AudioStreamPlayer3
+#endregion
 
 func _notification(what:int) -> void:
 	match what:
 		NOTIFICATION_WM_CLOSE_REQUEST:
+			is_editor_hint_custom = true
 			queue_free()
 		_: pass
 
@@ -187,9 +207,10 @@ func _ready() -> void:
 
 	# Set random Background and Text
 	_get_dir_contents(IMAGE_ROOT_PATH)
-	if file_array.size() > 0:
-		$Control/TextureRect.texture = load(file_array[randi_range(0,file_array.size()-1)])
-	$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,message.size())]
+	if image_file_array.size() > 0:
+		var image := load(image_file_array[randi_range(0,image_file_array.size()-1)])
+		bg_texture_rect.texture = image
+	message_label.text = message[randi_range(1,message.size())]
 
 	# Set Settings and Data
 	timer_label.text = TIMER_TEXT % ["00","00","00"]
@@ -198,9 +219,12 @@ func _ready() -> void:
 
 	# Connect Signals
 	next_button.pressed.connect(func() -> void:
+		is_editor_hint_custom = true
+
 		page_flip_audio.play()
 		anim_player.speed_scale = 11
 		anim_player.play("fade_out")
+
 		await page_flip_audio.finished
 		queue_free()
 	)
@@ -214,41 +238,33 @@ func _ready() -> void:
 	)
 
 	# Start the break time
-	$Timer.start(1)
+	if is_editor_hint_custom == false: parent = get_parent()
+	timer.start(1)
 
 func _set_break_time_label() -> void:
-	break_time_label.text = BREAK_TEXT % [new_break_time / 60]
-	if (new_break_time / 60) >= 10 and (new_break_time / 60) < 100:
-		break_time_label.text = str(0)+break_time_label.text
-	if (new_break_time / 60) < 10:
-		break_time_label.text = str(0)+str(0)+break_time_label.text
+	var formatted_minutes:String = str(new_break_time / 60)
+	match formatted_minutes.length():
+		1: formatted_minutes = "00" + formatted_minutes
+		2: formatted_minutes = "0"  + formatted_minutes
+		_: pass
+	break_time_label.text = BREAK_TEXT % formatted_minutes
 
-func _get_dir_contents(path):
-	var dir = DirAccess.open(path)
+func _get_dir_contents(path) -> void:
+	var dir := DirAccess.open(path)
 	if dir:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name := dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir(): _get_dir_contents(path+"/"+file_name)
+			if dir.current_is_dir(): _get_dir_contents(path+SEPARATOR+file_name)
 			else:
-				if file_name.get_extension().to_lower() == IMAGE_EXTENSION:
-					#print("--> KT Found file: " + file_name) # <-- Debug Files Found
-					file_array.append(dir.get_current_dir(true)+"/"+file_name)
+				if file_name.get_extension().to_lower() in IMAGE_EXTENSIONS:
+					image_file_array.append(dir.get_current_dir(true)+SEPARATOR+file_name)
 			file_name = dir.get_next()
 	else: push_error(ERR)
 
-var hours:String = str(0)
-var minutes:String = str(0)
-var seconds:String = str(0)
 func _on_timer_timeout() -> void:
 	seconds = str(int(seconds) + 1)
 	if int(seconds) >= 60: seconds = str(0); minutes = str(int(minutes) + 1)
 	if int(minutes) >= 60: minutes = str(0); hours = str(int(hours) + 1)
-
-	var final_hours:String = hours
-	var final_minutes:String = minutes
-	var final_seconds:String = seconds
-	if int(final_hours) < 10: final_hours = str(0)+hours
-	if int(final_minutes) < 10: final_minutes = str(0)+minutes
-	if int(final_seconds) < 10: final_seconds = str(0)+seconds
-	timer_label.text = TIMER_TEXT % [final_hours,final_minutes,final_seconds]
+	if not is_editor_hint_custom:
+		timer_label.text = parent.format_time(TIMER_TEXT,hours,minutes,seconds)

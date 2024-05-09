@@ -29,8 +29,7 @@ func _ready() -> void:
 		break_time = stats.break_time
 
 		_on_break_timer_timeout()
-		timer.paused = false
-		timer.start(1)
+		_start_timer()
 
 		skip_button.pressed.connect(func() -> void: _open_new_session_window())
 		stop_button.pressed.connect(func() -> void:
@@ -42,13 +41,16 @@ func _on_break_timer_timeout() -> void:
 	var hours:String = str(break_time_counter / 3600)
 	var minutes:String = str(break_time_counter % 3600 / 60)
 	var seconds:String = str(break_time_counter % 3600 % 60)
-	if int(hours) < 10: hours = str(0)+hours
-	if int(minutes) < 10: minutes = str(0)+minutes
-	if int(seconds) < 10: seconds = str(0)+seconds
-	timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
+	timer_label.text = format_time(TIMER_TEXT,hours,minutes,seconds)
 	if break_time_counter == 0:
 		_open_new_session_window()
 	break_time_counter -= 1
+
+func format_time(FORMAT:String,hours:String,minutes:String,seconds:String) -> String:
+	if int(hours) < 10: hours = str(0)+hours
+	if int(minutes) < 10: minutes = str(0)+minutes
+	if int(seconds) < 10: seconds = str(0)+seconds
+	return FORMAT % [hours,minutes,seconds]
 
 func _open_new_session_window() -> void:
 	timer.stop()
@@ -56,6 +58,7 @@ func _open_new_session_window() -> void:
 
 	window.position = DisplayServer.screen_get_size() / 2 - window.size / 2
 	window.new_break_time = break_time
+	window.is_editor_hint_custom = false
 	add_child(window,false,Node.INTERNAL_MODE_FRONT)
 	window.set_current_screen(DisplayServer.window_get_current_screen())
 
@@ -63,10 +66,14 @@ func _open_new_session_window() -> void:
 		break_time_counter = window.new_break_time
 		break_time = window.new_break_time
 		_on_break_timer_timeout()
-		timer.paused = false
-		timer.start(1)
+		_start_timer()
 	)
 
+func _start_timer() -> void:
+	timer.paused = false
+	timer.start(1)
+
+# Data and File related functions
 func write_data() -> void:
 	stats.break_time_counter = break_time_counter
 	stats.break_time = break_time
