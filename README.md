@@ -53,8 +53,12 @@ res://
 			images
 ```
 
-... copy and paste you own image files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
-Supported formats are **png**, **jpg**, **jpeg**, **svg**!!
+... copy and paste your own **image** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
+Supported formats are: 
+- .**png**
+- .**jpg**
+- .**jpeg**
+- .**svg**
 
 **Hope you like it!**
 
