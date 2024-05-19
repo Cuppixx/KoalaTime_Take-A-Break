@@ -10,5 +10,7 @@
 /readme-example.png.import  export-ignore
 /readme-example2.png        export-ignore
 /readme-example2.png.import export-ignore
+/preview-example.png        export-ignore
+/preview-example.png.import export-ignore
 /README.md                  export-ignore
 /project.godot              export-ignore

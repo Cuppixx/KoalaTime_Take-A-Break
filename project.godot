@@ -1,18 +1,10 @@
-; Engine configuration file.
-; It's best edited using the editor UI and not directly,
-; since the parameters that go here are not all obvious.
-;
-; Format:
-;   [section] ; section goes between []
-;   param=value ; assign values to parameters
-
 config_version=5
 
 [application]
 
 config/name="Koala Time Addon"
 config/version="1.0.2"
-config/tags=PackedStringArray("addon")
+config/tags=PackedStringArray("_final", "addon")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.png"
 
