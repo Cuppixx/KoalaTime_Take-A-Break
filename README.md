@@ -9,6 +9,7 @@ Work time is over! You get a cute image and a fun message to go along with it! I
 Want to [display your own images](#display-your-own-image-files)!?
 
 ![KoalaTime](readme-example.png)
+![KoalaTime2](readme-example2.png)
 
 ## TODO / What I want to do
 - _No pending tasks_
@@ -54,7 +55,7 @@ res://
 ```
 
 ... copy and paste your own **image** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
-Supported formats are: 
+Supported formats are:
 - .**png**
 - .**jpg**
 - .**jpeg**
