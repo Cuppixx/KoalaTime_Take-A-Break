@@ -1,10 +1,12 @@
 # KoalaTime_Take-A-Break
 
+**Disclaimer:** This project is complete and will not receive further updates at this time.
+
 ## Overview
 
 Structure your work time and take a well-deserved break once in a while.
 
-Work time is over! You get a cute image and a fun message to go along with it! It's up to you to decide when to launch your next work session! Increase or decrease your work time as you see fit!
+Work time is over! You get a nice image and a fun message to go along with it! It's up to you to decide when to launch your next work session! Increase or decrease your work time as you see fit!
 
 Want to [display your own images](#display-your-own-image-files)!?
 
